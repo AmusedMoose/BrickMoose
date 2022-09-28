@@ -23,8 +23,8 @@
         justify-content: space-around;
         align-items: stretch;
         align-content: stretch;
-        width: 100vw;
-        height: 100vw;
+        width: 100vmin;
+        height: 100vmin;
         padding: 10px;
     }
     .bal-container {
