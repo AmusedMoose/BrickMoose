@@ -1,24 +1,66 @@
-// Spotlight Glow Effect
-const cards = document.querySelectorAll(".spotlight-card");
+const carousel = document.getElementById('carousel');
+let isDragging = false;
+let startX;
+let scrollLeftStart;
 
+/* ==========================================
+   DESKTOP GRAB DRAG SYSTEM
+   ========================================== */
+carousel.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    carousel.classList.add('dragging');
+    startX = e.pageX - carousel.offsetLeft;
+    scrollLeftStart = carousel.scrollLeft;
+});
+
+carousel.addEventListener('mouseleave', () => {
+    if (!isDragging) return;
+    isDragging = false;
+    carousel.classList.remove('dragging');
+});
+
+carousel.addEventListener('mouseup', () => {
+    if (!isDragging) return;
+    isDragging = false;
+    carousel.classList.remove('dragging');
+});
+
+carousel.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault(); // Extra defense fallback against system text capture triggers
+    
+    const x = e.pageX - carousel.offsetLeft;
+    const walk = (x - startX) * 1.5; // Controls the movement responsiveness speed 
+    carousel.scrollLeft = scrollLeftStart - walk;
+});
+
+/* ==========================================
+   INTERACTIVE SPOTLIGHT GLOW EFFECT
+   ========================================== */
 document.addEventListener("mousemove", (e) => {
-    for(const card of cards) {
+    const cards = document.querySelectorAll(".spotlight-card");
+    
+    cards.forEach(card => {
         const rect = card.getBoundingClientRect(),
               x = e.clientX - rect.left,
               y = e.clientY - rect.top;
 
         card.style.setProperty("--x", `${x}px`);
         card.style.setProperty("--y", `${y}px`);
-    }
+    });
 });
 
-// Parallax Background Effect
-window.addEventListener('scroll', () => {
-    const scrollPos = window.scrollY;
-    const heroBg = document.getElementById('heroBg');
-    
-    // Moves the background down at 30% of the scroll speed
-    if (heroBg) {
-        heroBg.style.transform = `translateY(${scrollPos * 0.3}px)`;
-    }
-});
+/* ==========================================
+   HERO BACKGROUND PARALLAX ENGINE
+   ========================================== */
+const heroBg = document.getElementById('heroBg');
+
+if (heroBg) {
+    window.addEventListener('scroll', () => {
+        const scrolled = window.scrollY;
+        
+        // 0.3 controls the parallax speed factor. 
+        // Multiplying makes it slide slightly slower than the text, creating depth.
+        heroBg.style.transform = `translateY(${scrolled * 0.3}px)`;
+    });
+}

@@ -1,72 +1,13 @@
+/* ==========================================
+   1. VARIABLES & CORE SETTINGS
+   ========================================== */
 :root {
     --bg-main: #0a0510;
-    --bg-card: #1e122b; /* Slightly lighter than before for better contrast */
+    --bg-card: #1c1129;
     --color-primary: #a855f7;
     --color-accent: #ec4899;
-    --text-main: #ffffff;      /* Pure white for headers/buttons */
-    --text-secondary: #e2e8f0; /* Brighter gray for body text */
-}
-
-/* Larger Gallery Boxes */
-.spotlight-card {
-    flex: 0 0 350px;      /* Wider cards */
-    height: 450px;       /* Taller cards */
-    background: var(--bg-card);
-    border-radius: 16px;
-    padding: 0;          /* Remove padding to let image reach edges */
-    overflow: hidden;    /* Clips image corners */
-    display: flex;
-    flex-direction: column;
-}
-
-/* The Image Slot */
-/* Center Title and Line */
-.section-header { 
-    text-align: center; 
-    margin-bottom: 3rem; 
-}
-
-.section-header::before {
-    content: "";
-    display: block;
-    width: 80vw;
-    height: 4px;
-    background: var(--color-primary); /* The brand color line */
-    margin: 0 auto 1rem auto;
-    border-radius: 2px;
-}
-
-/* Side Padding for the Carousel */
-.carousel-container {
-    padding: 0 2rem; /* Adds padding to the sides */
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
-/* Dynamic Image Slot */
-.image-slot {
-    width: 100%;
-    height: 250px;
-    background: #150a21; /* Match card background */
-    overflow: hidden;
-}
-
-.image-slot img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Fills space, crops if necessary */
-    transition: transform 0.3s ease;
-}
-
-/* Add a slight zoom effect on hover for premium feel */
-.spotlight-card:hover .image-slot img {
-    transform: scale(1.05);
-}
-
-/* Text area below the image */
-.card-content {
-    padding: 1.5rem;
-    flex-grow: 1;
+    --text-main: #ffffff;
+    --text-secondary: #e2e8f0;
 }
 
 body {
@@ -74,13 +15,18 @@ body {
     color: var(--text-main);
     font-family: system-ui, sans-serif;
     margin: 0;
+    overflow-x: hidden;
 }
 
+/* ==========================================
+   2. HEADER & NAVIGATION
+   ========================================== */
 header {
     display: flex;
     justify-content: space-between;
     padding: 2rem;
     align-items: center;
+    box-sizing: border-box;
 }
 
 .logo {
@@ -92,98 +38,177 @@ header {
     color: var(--color-accent);
 }
 
-.btn {
-    flex: 1;
-    /* Forces both buttons to be exactly the same size */
-    padding: 1.25rem 2rem;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    text-decoration: none;
-    border: 2px solid transparent;
-    /* Keeps layout stable */
-    text-align: center;
-    font-size: 1rem;
-}
-
-
-/* Update your button primary to flip the gradient logic */
-.btn-primary {
-    background: linear-gradient(135deg, var(--color-accent), var(--color-primary));
-    color: white;
-}
-
-/* Ensure the container is robust */
-.hero-actions {
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-    width: 100%;
-    max-width: 450px;
-    margin: 2rem auto 0;
-}
-
-
-.btn-secondary {
-    border-color: var(--color-primary);
-    color: white;
-}
-
-/* Update your .hero class */
+/* ==========================================
+   3. HERO SECTION & BACKGROUND FIX
+   ========================================== */
 .hero {
     position: relative;
     text-align: center;
-    /* This makes it fill the screen minus header height */
-    min-height: calc(100vh - 90px);
-
-    /* Flexbox centers your text/buttons vertically */
+    min-height: calc(100vh - 96px);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
     overflow: hidden;
-}
-
-/* Ensure the hero-content stays centered */
-.hero-content {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    max-width: 800px;
-    /* Keeps the text readable, not stretched */
-    padding: 2rem;
+    /* We no longer need isolation: isolate because we are using positive layering */
 }
 
 .hero-background {
     position: absolute;
     top: -80px;
-    /* Starts the image higher up */
     left: 0;
     width: 100%;
     height: 120%;
-    /* Extra height for parallax movement */
-    z-index: -1;
+    z-index: 1; /* Move up to layer 1 */
     will-change: transform;
-    /* Performance optimization for scrolling */
 }
 
 .hero-background img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0.25;
+    opacity: 0.25; /* Subtle backdrop blend */
+    
+    /* Perfect fade out at the bottom */
     mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
 }
 
-/* Spotlight Effect Base */
-.spotlight-card {
-    background: var(--bg-card);
-    width: 300px;
-    padding: 2rem;
-    border-radius: 12px;
+.hero-content {
     position: relative;
+    z-index: 2; /* Force text content to sit cleanly ON TOP of the background layer */
+    width: 100%;
+    max-width: 800px;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+/* ==========================================
+   4. ACTIONS & BUTTONS
+   ========================================== */
+.hero-actions { 
+    display: flex; 
+    flex-direction: row;
+    justify-content: center; 
+    gap: 1rem; 
+    width: 100%; 
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 2.5rem auto 0; 
+    padding: 0 1.5rem;
+}
+
+.btn { 
+    flex: 1;
+    display: inline-flex;
+    align-items: center; 
+    justify-content: center; 
+    text-align: center;
+    padding: 1.1rem 1.5rem; 
+    border-radius: 12px; 
+    font-weight: 700; 
+    cursor: pointer; 
+    text-decoration: none; 
+    font-size: 1rem;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    white-space: nowrap;
+    transition: transform 0.2s ease;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn-primary { 
+    background: linear-gradient(135deg, var(--color-accent), var(--color-primary)); 
+    color: white; 
+}
+
+.btn-secondary { 
+    background: transparent;
+    color: white; 
+    border: 2px solid var(--color-primary) !important;
+}
+
+/* ==========================================
+   5. DRAGGABLE CAROUSEL (PROXIMITY SNAP)
+   ========================================== */
+.gallery {
     overflow: hidden;
+    width: 100%;
+    padding: 6rem 0;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.section-header::before {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: var(--color-primary);
+    margin: 0 auto 1rem auto;
+    border-radius: 2px;
+}
+
+.carousel-container {
+    padding: 0 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.carousel {
+    display: flex;
+    gap: 2rem;
+    overflow-x: auto;
+    padding: 1rem 0;
+    -webkit-overflow-scrolling: touch; 
+    cursor: grab;
+    scrollbar-width: none; 
+    
+    /* FIX: Changed from mandatory to proximity for softer alignment behavior */
+    scroll-snap-type: x proximity; 
+    scroll-padding: 0 1.5rem;
+    
+    /* FIX: Prevents text highlighting anomalies completely during dragging gestures */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.carousel::-webkit-scrollbar { 
+    display: none; 
+}
+
+/* Safely turns off snapping parameters while active drag movement occurs */
+.carousel.dragging {
+    scroll-snap-type: none !important;
+    scroll-behavior: auto !important;
+    cursor: grabbing;
+}
+
+/* ==========================================
+   6. SPOTLIGHT CARDS
+   ========================================== */
+.spotlight-card {
+    width: 290px;
+    height: 440px;
+    background: var(--bg-card);
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-sizing: border-box;
+    flex-shrink: 0;
+    position: relative;
+    scroll-snap-align: center;
 }
 
 .spotlight-card::before {
@@ -192,49 +217,82 @@ header {
     inset: 0;
     background: radial-gradient(400px circle at var(--x) var(--y), var(--color-primary), transparent 40%);
     opacity: 0;
-    transition: opacity 0.3s;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
 }
 
 .spotlight-card:hover::before {
     opacity: 0.5;
 }
 
-/* Update your Gallery/Carousel styles */
-.carousel {
+.image-slot {
+    width: 100%;
+    height: 55%;
+    background: rgba(0, 0, 0, 0.2); 
+    padding: 1.5rem;
+    box-sizing: border-box;
     display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    gap: 1.5rem;
-    padding: 1rem 0;
-    /* This hides scrollbar on Chrome/Safari but keeps functionality */
-    scrollbar-width: none; 
-}
-
-.carousel::-webkit-scrollbar { display: none; }
-
-.spotlight-card {
-    flex: 0 0 300px; /* Forces cards to stay this width, not stack */
-    scroll-snap-align: start;
-    background: var(--bg-card);
-    padding: 2rem;
-    border-radius: 12px;
-    position: relative;
+    align-items: center;
+    justify-content: center;
     overflow: hidden;
 }
 
-.wholesale-pillars { padding: 4rem 1rem; max-width: 1000px; margin: 0 auto; text-align: center; }
-.pillars-grid { 
-    display: grid; 
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
-    gap: 2rem; 
-    margin-top: 3rem; 
+.image-slot img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+    pointer-events: none;
+    transition: transform 0.3s ease;
 }
-.pillar { 
-    background: rgba(255,255,255,0.03); 
-    padding: 2rem; 
-    border-radius: 8px; 
-    border: 1px solid rgba(255,255,255,0.05);
-}
-.pillar h3 { color: var(--color-primary); margin-bottom: 1rem; }
 
-footer { text-align: center; padding: 4rem 1rem; border-top: 1px solid rgba(255,255,255,0.1); color: #64748b; }
+.spotlight-card:hover .image-slot img {
+    transform: scale(1.05);
+}
+
+.card-content {
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex-grow: 1;
+}
+
+.card-content h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.4rem;
+    color: var(--text-main);
+}
+
+.card-content p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* ==========================================
+   7. FOOTER & RESPONSIVE QUERIES
+   ========================================== */
+footer { 
+    text-align: center; 
+    padding: 4rem 1rem; 
+    border-top: 1px solid rgba(255,255,255,0.1); 
+    color: #64748b; 
+}
+
+@media (min-width: 768px) {
+    .hero-actions {
+        max-width: 550px;
+    }
+    
+    .btn {
+        padding: 1.4rem 2.5rem; 
+        font-size: 1.15rem;
+    }
+
+    .spotlight-card {
+        width: 380px;
+        height: 520px;
+    }
+}
