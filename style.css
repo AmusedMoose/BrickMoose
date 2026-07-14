@@ -12,13 +12,73 @@ header { display: flex; justify-content: space-between; padding: 2rem; align-ite
 .logo { font-size: 1.5rem; font-weight: 800; }
 .logo span { color: var(--color-accent); }
 
-.hero { text-align: center; padding: 4rem 1rem; }
-h1 { font-size: 3rem; margin-bottom: 1rem; }
 
-.hero-actions { display: flex; justify-content: center; gap: 1rem; }
-.btn { padding: 1rem 2rem; border-radius: 8px; font-weight: bold; cursor: pointer; text-decoration: none; border: none; }
+/* Fix for buttons: Equal size, larger target area */
+.hero-actions { 
+    display: flex; 
+    gap: 1.5rem; 
+    width: 100%; 
+    max-width: 450px; 
+    margin: 2rem auto 0; 
+}
+
+.btn { 
+    flex: 1; /* Forces both buttons to be exactly the same size */
+    padding: 1.25rem 2rem; 
+    border-radius: 8px; 
+    font-weight: 600; 
+    cursor: pointer; 
+    text-decoration: none; 
+    border: 2px solid transparent; /* Keeps layout stable */
+    text-align: center;
+    font-size: 1rem;
+}
+
 .btn-primary { background: linear-gradient(135deg, var(--color-primary), var(--color-accent)); color: white; }
-.btn-secondary { border: 2px solid var(--color-primary); color: var(--color-primary); }
+.btn-secondary { border-color: var(--color-primary); color: white; }
+
+/* Update your .hero class */
+.hero { 
+    position: relative; 
+    text-align: center; 
+    /* This makes it fill the screen minus header height */
+    min-height: calc(100vh - 96px); 
+    
+    /* Flexbox centers your text/buttons vertically */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    overflow: hidden; 
+}
+
+/* Ensure the hero-content stays centered */
+.hero-content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 800px; /* Keeps the text readable, not stretched */
+    padding: 2rem;
+}
+
+.hero-background {
+    position: absolute;
+    top: -80px; /* Starts the image higher up */
+    left: 0;
+    width: 100%;
+    height: 120%; /* Extra height for parallax movement */
+    z-index: -1;
+    will-change: transform; /* Performance optimization for scrolling */
+}
+
+.hero-background img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.25;
+    mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+}
 
 /* Spotlight Effect Base */
 .spotlight-card {

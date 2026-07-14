@@ -12,6 +12,13 @@ document.addEventListener("mousemove", (e) => {
     }
 });
 
-// Parallax/Tilt logic could go here or be added as you build out 
-// specific components.
-console.log("BrickMoose System Initialized.");
+// Parallax Background Effect
+window.addEventListener('scroll', () => {
+    const scrollPos = window.scrollY;
+    const heroBg = document.getElementById('heroBg');
+    
+    // Moves the background down at 30% of the scroll speed
+    if (heroBg) {
+        heroBg.style.transform = `translateY(${scrollPos * 0.3}px)`;
+    }
+});
