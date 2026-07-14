@@ -1,0 +1,282 @@
+/* ==========================================
+   1. LAYOUT CONTAINERS & HERO
+   ========================================== */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    box-sizing: border-box;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.section-title h2 {
+    font-size: 2.2rem;
+    color: var(--text-main);
+    margin-bottom: 1rem;
+}
+
+.section-title p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.custom-hero {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem;
+    box-sizing: border-box;
+    background: radial-gradient(circle at top, rgba(168, 85, 247, 0.1) 0%, transparent 60%);
+}
+
+.badge {
+    background: rgba(236, 72, 153, 0.15);
+    color: var(--color-accent);
+    padding: 0.5rem 1.2rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid rgba(236, 72, 153, 0.25);
+    display: inline-block;
+    margin-bottom: 1.5rem;
+}
+
+.custom-hero h1 {
+    font-size: 3.5rem;
+    line-height: 1.1;
+    margin: 0 0 1.5rem 0;
+}
+
+.custom-hero p {
+    max-width: 650px;
+    margin: 0 auto 2.5rem auto;
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+/* ==========================================
+   2. CAPABILITIES GRID
+   ========================================== */
+.capabilities {
+    padding: 6rem 0;
+    background: rgba(255, 255, 255, 0.01);
+}
+
+.caps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2.5rem;
+}
+
+.cap-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 16px;
+    padding: 2.5rem;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.cap-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(168, 85, 247, 0.3);
+}
+
+.cap-icon {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.cap-card h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.35rem;
+    color: var(--text-main);
+}
+
+.cap-card p {
+    margin: 0;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* ==========================================
+   3. PIPELINE STEPPER
+   ========================================== */
+.process {
+    padding: 6rem 0;
+}
+
+.pipeline {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+    position: relative;
+}
+
+.step {
+    position: relative;
+}
+
+.step-number {
+    font-size: 3rem;
+    font-weight: 900;
+    background: linear-gradient(to bottom, var(--color-primary), transparent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 0.4;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.step h4 {
+    font-size: 1.2rem;
+    margin: 0 0 0.75rem 0;
+    color: var(--text-main);
+}
+
+.step p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* ==========================================
+   4. INTAKE FORM STYLING
+   ========================================== */
+.inquiry-section {
+    padding: 6rem 0;
+    background: linear-gradient(to bottom, transparent, rgba(28, 17, 41, 0.4));
+}
+
+.form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    box-sizing: border-box;
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+}
+
+.form-header h2 {
+    font-size: 2.2rem;
+    margin-bottom: 0.75rem;
+}
+
+.form-header p {
+    color: var(--text-secondary);
+}
+
+.custom-form {
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 24px;
+    padding: 3rem;
+    box-sizing: border-box;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.form-row {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-bottom: 1.8rem;
+}
+
+.form-row .form-group {
+    margin-bottom: 0;
+}
+
+.form-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    background: rgba(10, 5, 16, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 1rem;
+    color: var(--text-main);
+    font-family: inherit;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.15);
+}
+
+.form-group select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23e2e8f0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1.2rem;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.form-submit {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+/* ==========================================
+   5. RESPONSIVE MEDIA BREAKPOINTS
+   ========================================== */
+@media (max-width: 768px) {
+    .custom-hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .form-row {
+        flex-direction: column;
+        gap: 1.8rem;
+    }
+    
+    .custom-form {
+        padding: 2rem 1.5rem;
+    }
+    
+    .pipeline {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+}
