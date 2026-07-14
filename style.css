@@ -1,56 +1,148 @@
 :root {
     --bg-main: #0a0510;
-    --bg-card: #150a21;
+    --bg-card: #1e122b; /* Slightly lighter than before for better contrast */
     --color-primary: #a855f7;
     --color-accent: #ec4899;
-    --text-main: #f8fafc;
+    --text-main: #ffffff;      /* Pure white for headers/buttons */
+    --text-secondary: #e2e8f0; /* Brighter gray for body text */
 }
 
-body { background-color: var(--bg-main); color: var(--text-main); font-family: system-ui, sans-serif; margin: 0; }
-
-header { display: flex; justify-content: space-between; padding: 2rem; align-items: center; }
-.logo { font-size: 1.5rem; font-weight: 800; }
-.logo span { color: var(--color-accent); }
-
-
-/* Fix for buttons: Equal size, larger target area */
-.hero-actions { 
-    display: flex; 
-    gap: 1.5rem; 
-    width: 100%; 
-    max-width: 450px; 
-    margin: 2rem auto 0; 
+/* Larger Gallery Boxes */
+.spotlight-card {
+    flex: 0 0 350px;      /* Wider cards */
+    height: 450px;       /* Taller cards */
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 0;          /* Remove padding to let image reach edges */
+    overflow: hidden;    /* Clips image corners */
+    display: flex;
+    flex-direction: column;
 }
 
-.btn { 
-    flex: 1; /* Forces both buttons to be exactly the same size */
-    padding: 1.25rem 2rem; 
-    border-radius: 8px; 
-    font-weight: 600; 
-    cursor: pointer; 
-    text-decoration: none; 
-    border: 2px solid transparent; /* Keeps layout stable */
+/* The Image Slot */
+/* Center Title and Line */
+.section-header { 
+    text-align: center; 
+    margin-bottom: 3rem; 
+}
+
+.section-header::before {
+    content: "";
+    display: block;
+    width: 80vw;
+    height: 4px;
+    background: var(--color-primary); /* The brand color line */
+    margin: 0 auto 1rem auto;
+    border-radius: 2px;
+}
+
+/* Side Padding for the Carousel */
+.carousel-container {
+    padding: 0 2rem; /* Adds padding to the sides */
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Dynamic Image Slot */
+.image-slot {
+    width: 100%;
+    height: 250px;
+    background: #150a21; /* Match card background */
+    overflow: hidden;
+}
+
+.image-slot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Fills space, crops if necessary */
+    transition: transform 0.3s ease;
+}
+
+/* Add a slight zoom effect on hover for premium feel */
+.spotlight-card:hover .image-slot img {
+    transform: scale(1.05);
+}
+
+/* Text area below the image */
+.card-content {
+    padding: 1.5rem;
+    flex-grow: 1;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-family: system-ui, sans-serif;
+    margin: 0;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.logo span {
+    color: var(--color-accent);
+}
+
+.btn {
+    flex: 1;
+    /* Forces both buttons to be exactly the same size */
+    padding: 1.25rem 2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    border: 2px solid transparent;
+    /* Keeps layout stable */
     text-align: center;
     font-size: 1rem;
 }
 
-.btn-primary { background: linear-gradient(135deg, var(--color-primary), var(--color-accent)); color: white; }
-.btn-secondary { border-color: var(--color-primary); color: white; }
+
+/* Update your button primary to flip the gradient logic */
+.btn-primary {
+    background: linear-gradient(135deg, var(--color-accent), var(--color-primary));
+    color: white;
+}
+
+/* Ensure the container is robust */
+.hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 450px;
+    margin: 2rem auto 0;
+}
+
+
+.btn-secondary {
+    border-color: var(--color-primary);
+    color: white;
+}
 
 /* Update your .hero class */
-.hero { 
-    position: relative; 
-    text-align: center; 
+.hero {
+    position: relative;
+    text-align: center;
     /* This makes it fill the screen minus header height */
-    min-height: calc(100vh - 96px); 
-    
+    min-height: calc(100vh - 90px);
+
     /* Flexbox centers your text/buttons vertically */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    
-    overflow: hidden; 
+
+    overflow: hidden;
 }
 
 /* Ensure the hero-content stays centered */
@@ -58,18 +150,22 @@ header { display: flex; justify-content: space-between; padding: 2rem; align-ite
     position: relative;
     z-index: 1;
     width: 100%;
-    max-width: 800px; /* Keeps the text readable, not stretched */
+    max-width: 800px;
+    /* Keeps the text readable, not stretched */
     padding: 2rem;
 }
 
 .hero-background {
     position: absolute;
-    top: -80px; /* Starts the image higher up */
+    top: -80px;
+    /* Starts the image higher up */
     left: 0;
     width: 100%;
-    height: 120%; /* Extra height for parallax movement */
+    height: 120%;
+    /* Extra height for parallax movement */
     z-index: -1;
-    will-change: transform; /* Performance optimization for scrolling */
+    will-change: transform;
+    /* Performance optimization for scrolling */
 }
 
 .hero-background img {
@@ -83,12 +179,62 @@ header { display: flex; justify-content: space-between; padding: 2rem; align-ite
 /* Spotlight Effect Base */
 .spotlight-card {
     background: var(--bg-card);
-    width: 300px; padding: 2rem; border-radius: 12px;
-    position: relative; overflow: hidden;
+    width: 300px;
+    padding: 2rem;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
 }
+
 .spotlight-card::before {
-    content: ""; position: absolute; inset: 0;
+    content: "";
+    position: absolute;
+    inset: 0;
     background: radial-gradient(400px circle at var(--x) var(--y), var(--color-primary), transparent 40%);
-    opacity: 0; transition: opacity 0.3s;
+    opacity: 0;
+    transition: opacity 0.3s;
 }
-.spotlight-card:hover::before { opacity: 0.5; }
+
+.spotlight-card:hover::before {
+    opacity: 0.5;
+}
+
+/* Update your Gallery/Carousel styles */
+.carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 1.5rem;
+    padding: 1rem 0;
+    /* This hides scrollbar on Chrome/Safari but keeps functionality */
+    scrollbar-width: none; 
+}
+
+.carousel::-webkit-scrollbar { display: none; }
+
+.spotlight-card {
+    flex: 0 0 300px; /* Forces cards to stay this width, not stack */
+    scroll-snap-align: start;
+    background: var(--bg-card);
+    padding: 2rem;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+}
+
+.wholesale-pillars { padding: 4rem 1rem; max-width: 1000px; margin: 0 auto; text-align: center; }
+.pillars-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+    gap: 2rem; 
+    margin-top: 3rem; 
+}
+.pillar { 
+    background: rgba(255,255,255,0.03); 
+    padding: 2rem; 
+    border-radius: 8px; 
+    border: 1px solid rgba(255,255,255,0.05);
+}
+.pillar h3 { color: var(--color-primary); margin-bottom: 1rem; }
+
+footer { text-align: center; padding: 4rem 1rem; border-top: 1px solid rgba(255,255,255,0.1); color: #64748b; }
