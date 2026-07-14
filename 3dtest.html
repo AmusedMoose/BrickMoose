@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Floating Card</title>
+    <style>
+        /* Using our established Dark Theme colors */
+        :root {
+            --bg-main: #0a0510;
+            --color-primary: #a855f7;
+            --color-accent: #ec4899;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: system-ui, sans-serif;
+            overflow: hidden;
+        }
+
+        /* 1. THE SCENE: This establishes the 3D space */
+        .scene {
+            width: 320px;
+            height: 420px;
+            perspective: 1000px; /* This is the magic property that gives depth */
+        }
+
+        /* 2. THE CARD: The actual floating element */
+        .floating-card {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #150a21, #1e0f2f);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 12px;
+            position: relative;
+            
+            /* Tells the browser to treat children as 3D objects too */
+            transform-style: preserve-3d;
+            
+            /* The base floating shadow with a hint of purple */
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 20px rgba(168, 85, 247, 0.1);
+            
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        /* 3. THE 3D CONTENT: Pushing elements off the card */
+        .floating-card h3 {
+            transform: translateZ(60px); /* Pushes the text 60px towards you! */
+            text-shadow: 0 10px 20px rgba(0,0,0,0.8);
+            margin: 0;
+            font-size: 1.8rem;
+        }
+        
+        .floating-card .badge {
+            transform: translateZ(40px);
+            background: var(--color-accent);
+            padding: 6px 12px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* 4. SMOOTH RESET: When the mouse/finger leaves, snap back gently */
+        .scene:not(:hover) .floating-card {
+            transform: rotateX(0) rotateY(0) !important;
+            transition: transform 0.5s ease-out, box-shadow 0.5s ease-out;
+            /* Reset the shadow to the center */
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 20px rgba(168, 85, 247, 0.1) !important; 
+        }
+    </style>
+</head>
+<body>
+
+    <div class="scene">
+        <div class="floating-card" id="tilt-card">
+            <div class="badge">Custom Build</div>
+            <h3>UCR Bell Tower</h3>
+        </div>
+    </div>
+
+    <script>
+        const card = document.getElementById('tilt-card');
+        const scene = document.querySelector('.scene');
+
+        // This function handles the math for the tilt
+        function handleMove(e) {
+            // Prevent scrolling on mobile while dragging the card
+            if (e.type === 'touchmove') e.preventDefault(); 
+
+            // Grab coordinates for either mouse or touch
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+            // Get the card's exact position on the screen
+            const rect = scene.getBoundingClientRect();
+            
+            // Calculate where the cursor is relative to the center of the card
+            const x = clientX - rect.left - rect.width / 2;
+            const y = clientY - rect.top - rect.height / 2;
+
+            // Dampening factor: Higher number = less extreme tilt
+            const dampen = 15;
+            
+            // Map the mouse position to rotation degrees
+            const rotateX = -(y / dampen);
+            const rotateY = (x / dampen);
+
+            // Apply the 3D rotation instantly (no CSS transition here so it feels responsive)
+            card.style.transition = 'none';
+            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            
+            // Optional Polish: Shift the drop shadow opposite to the tilt direction 
+            // This makes the light source feel real.
+            const shadowX = -(x / 5);
+            const shadowY = -(y / 5);
+            card.style.boxShadow = `${shadowX}px ${shadowY + 20}px 40px rgba(0,0,0,0.7), 0 0 20px rgba(168, 85, 247, 0.2)`;
+        }
+
+        // Listen for both desktop mouse and mobile touch
+        scene.addEventListener('mousemove', handleMove);
+        scene.addEventListener('touchmove', handleMove, { passive: false });
+
+        // Touch devices don't have a CSS "hover" exit state, so we manually reset it on release
+        scene.addEventListener('touchend', () => {
+            card.style.transition = 'transform 0.5s ease-out, box-shadow 0.5s ease-out';
+            card.style.transform = `rotateX(0deg) rotateY(0deg)`;
+            card.style.boxShadow = `0 20px 40px rgba(0,0,0,0.6), 0 0 20px rgba(168, 85, 247, 0.1)`;
+        });
+    </script>
+</body>
+</html> 
