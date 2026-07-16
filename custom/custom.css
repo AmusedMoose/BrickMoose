@@ -312,23 +312,12 @@
     position: relative;
     border-radius: 20px;
     overflow: hidden;
-    
-    /* 1. Establishing the 3D Scene */
-    perspective: 1000px; 
 }
 
 .spotlight-row-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    
-    /* 2. Allowing the image to exist in 3D space */
-    transform-style: preserve-3d;
-    
-    /* 3. Smooth reset transition */
-    transition: transform 0.5s ease-out, box-shadow 0.5s ease-out;
-    will-change: transform;
-    pointer-events: none; /* Let the container capture the mouse */
 }
 
 @media (max-width: 768px) {

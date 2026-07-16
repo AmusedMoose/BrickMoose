@@ -82,36 +82,19 @@ document.querySelectorAll('.scroll-link').forEach(link => {
         }
     });
 });
-/* ==========================================
-   3D TILT ENGINE (Adapted from reference)
-   ========================================== */
-const tiltContainers = document.querySelectorAll(".spotlight-row-image");
 
-tiltContainers.forEach(container => {
-    // The image inside is the "card" that moves
-    const image = container.querySelector('img');
+function loadComponent(id, file) {
+    const element = document.getElementById(id);
+    if (element) {
+        fetch(file)
+            .then(response => response.text())
+            .then(data => {
+                element.innerHTML = data;
+            });
+    }
+}
 
-    container.addEventListener('mousemove', (e) => {
-        // Get container position
-        const rect = container.getBoundingClientRect();
-        
-        // Calculate center-relative mouse position
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-
-        // Dampen intensity (15 is the sweet spot from your reference)
-        const dampen = 15;
-        const rotateX = -(y / dampen);
-        const rotateY = (x / dampen);
-
-        // Apply instant rotation
-        image.style.transition = 'none';
-        image.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
-    });
-
-    // Reset when mouse leaves
-    container.addEventListener('mouseleave', () => {
-        image.style.transition = 'transform 0.5s ease-out';
-        image.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
-    });
+document.addEventListener("DOMContentLoaded", () => {
+    loadComponent("header-placeholder", "./components/header.html");
+    loadComponent("footer-placeholder", "./components/footer.html");
 });
