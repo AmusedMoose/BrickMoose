@@ -28,7 +28,7 @@ carousel.addEventListener('mouseup', () => {
 carousel.addEventListener('mousemove', (e) => {
     if (!isDragging) return;
     e.preventDefault(); // Extra defense fallback against system text capture triggers
-    
+
     const x = e.pageX - carousel.offsetLeft;
     const walk = (x - startX) * 1.5; // Controls the movement responsiveness speed 
     carousel.scrollLeft = scrollLeftStart - walk;
@@ -39,11 +39,11 @@ carousel.addEventListener('mousemove', (e) => {
    ========================================== */
 document.addEventListener("mousemove", (e) => {
     const cards = document.querySelectorAll(".spotlight-card");
-    
+
     cards.forEach(card => {
         const rect = card.getBoundingClientRect(),
-              x = e.clientX - rect.left,
-              y = e.clientY - rect.top;
+            x = e.clientX - rect.left,
+            y = e.clientY - rect.top;
 
         card.style.setProperty("--x", `${x}px`);
         card.style.setProperty("--y", `${y}px`);
@@ -58,7 +58,7 @@ const heroBg = document.getElementById('heroBg');
 if (heroBg) {
     window.addEventListener('scroll', () => {
         const scrolled = window.scrollY;
-        
+
         // 0.3 controls the parallax speed factor. 
         // Multiplying makes it slide slightly slower than the text, creating depth.
         heroBg.style.transform = `translateY(${scrolled * 0.3}px)`;
@@ -69,11 +69,11 @@ if (heroBg) {
    SMOOTH INTERACTION SCROLL LINK LOGIC
    ========================================== */
 document.querySelectorAll('.scroll-link').forEach(link => {
-    link.addEventListener('click', function(e) {
+    link.addEventListener('click', function (e) {
         e.preventDefault();
         const targetId = this.getAttribute('href');
         const targetElement = document.querySelector(targetId);
-        
+
         if (targetElement) {
             targetElement.scrollIntoView({
                 behavior: 'smooth',
@@ -95,6 +95,9 @@ function loadComponent(id, file) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    loadComponent("header-placeholder", "/BrickMoose/components/header.html");
-    loadComponent("footer-placeholder", "/BrickMoose/components/footer.html");
+    const isRoot = window.location.pathname.split('/').filter(Boolean).length <= 1;
+    const pathPrefix = isRoot ? "" : "../";
+
+    loadComponent("header-placeholder", `${pathPrefix}components/header.html`);
+    loadComponent("footer-placeholder", `${pathPrefix}components/footer.html`);
 });
