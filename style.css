@@ -3,8 +3,9 @@
    ========================================== */
 :root {
     --bg-main: #0a0510;
-    --bg-card: #1c1129;
+    --bg-card: #29193c;
     --color-primary: #a855f7;
+    --dark-color-primary: #530f93;
     --color-accent: #ec4899;
     --text-main: #ffffff;
     --text-secondary: #e2e8f0;
@@ -16,6 +17,10 @@ body {
     font-family: system-ui, sans-serif;
     margin: 0;
     overflow-x: hidden;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 /* ==========================================
@@ -215,14 +220,19 @@ header {
     content: "";
     position: absolute;
     inset: 0;
-    background: radial-gradient(400px circle at var(--x) var(--y), var(--color-primary), transparent 40%);
-    opacity: 0;
+    background: radial-gradient(800px circle at var(--x) var(--y), var(--color-primary), transparent 40%);
+    opacity: 0.25;
     transition: opacity 0.3s ease;
     pointer-events: none;
 }
 
 .spotlight-card:hover::before {
     opacity: 0.5;
+}
+
+.spotlight-card > * {
+    position: relative;
+    z-index: 1;
 }
 
 .image-slot {

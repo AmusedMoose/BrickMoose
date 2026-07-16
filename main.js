@@ -1,4 +1,5 @@
 const carousel = document.getElementById('carousel');
+
 let isDragging = false;
 let startX;
 let scrollLeftStart;
@@ -6,47 +7,52 @@ let scrollLeftStart;
 /* ==========================================
    DESKTOP GRAB DRAG SYSTEM
    ========================================== */
-carousel.addEventListener('mousedown', (e) => {
-    isDragging = true;
-    carousel.classList.add('dragging');
-    startX = e.pageX - carousel.offsetLeft;
-    scrollLeftStart = carousel.scrollLeft;
-});
 
-carousel.addEventListener('mouseleave', () => {
-    if (!isDragging) return;
-    isDragging = false;
-    carousel.classList.remove('dragging');
-});
+if (carousel) {
 
-carousel.addEventListener('mouseup', () => {
-    if (!isDragging) return;
-    isDragging = false;
-    carousel.classList.remove('dragging');
-});
+    carousel.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        carousel.classList.add('dragging');
+        startX = e.pageX - carousel.offsetLeft;
+        scrollLeftStart = carousel.scrollLeft;
+    });
 
-carousel.addEventListener('mousemove', (e) => {
-    if (!isDragging) return;
-    e.preventDefault(); // Extra defense fallback against system text capture triggers
+    carousel.addEventListener('mouseleave', () => {
+        if (!isDragging) return;
+        isDragging = false;
+        carousel.classList.remove('dragging');
+    });
 
-    const x = e.pageX - carousel.offsetLeft;
-    const walk = (x - startX) * 1.5; // Controls the movement responsiveness speed 
-    carousel.scrollLeft = scrollLeftStart - walk;
-});
+    carousel.addEventListener('mouseup', () => {
+        if (!isDragging) return;
+        isDragging = false;
+        carousel.classList.remove('dragging');
+    });
 
+    carousel.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        e.preventDefault(); // Extra defense fallback against system text capture triggers
+
+        const x = e.pageX - carousel.offsetLeft;
+        const walk = (x - startX) * 1.5; // Controls the movement responsiveness speed 
+        carousel.scrollLeft = scrollLeftStart - walk;
+    });
+
+}
 /* ==========================================
    INTERACTIVE SPOTLIGHT GLOW EFFECT
    ========================================== */
 document.addEventListener("mousemove", (e) => {
-    const cards = document.querySelectorAll(".spotlight-card");
+    // Selects both existing spotlight cards and the new pipeline steps
+    const glowingElements = document.querySelectorAll(".spotlight-card, .step, .custom-form");
 
-    cards.forEach(card => {
-        const rect = card.getBoundingClientRect(),
+    glowingElements.forEach(el => {
+        const rect = el.getBoundingClientRect(),
             x = e.clientX - rect.left,
             y = e.clientY - rect.top;
 
-        card.style.setProperty("--x", `${x}px`);
-        card.style.setProperty("--y", `${y}px`);
+        el.style.setProperty("--x", `${x}px`);
+        el.style.setProperty("--y", `${y}px`);
     });
 });
 

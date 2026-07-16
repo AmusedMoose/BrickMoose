@@ -112,45 +112,61 @@
 }
 
 /* ==========================================
-   3. PIPELINE STEPPER
+   UPDATED PIPELINE GRID (Max 3 Cols)
    ========================================== */
-.process {
-    padding: 6rem 0;
-}
-
 .pipeline {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    /* Forces at least 320px width per card, ensuring max 3 cols on large screens */
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 2rem;
-    position: relative;
+    max-width: 1100px; /* Constrains total width to keep it centered and controlled */
+    margin: 0 auto;
 }
 
 .step {
+    background: var(--bg-card); /* Filled Background */
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 2.5rem;
+    border-radius: 20px;
     position: relative;
+    overflow: hidden; /* Ensures glow doesn't bleed outside the rounded corners */
 }
 
+/* SPOTLIGHT GLOW EFFECT FOR STEPS */
+.step::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    /* Base visibility: 0.15 is subtle, 0.3 is more pronounced */
+    background: radial-gradient(800px circle at var(--x) var(--y), var(--color-primary), transparent 40%);
+    opacity: 0.25; 
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+/* Brighter glow when you actually move your mouse over it */
+.step:hover::before {
+    opacity: 0.5; 
+}
+
+.step > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Adjusting step number to fit the new card style */
 .step-number {
-    font-size: 3rem;
-    font-weight: 900;
-    background: linear-gradient(to bottom, var(--color-primary), transparent);
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(to bottom, var(--color-primary), var(--dark-color-primary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    opacity: 0.4;
-    line-height: 1;
-    margin-bottom: 0.5rem;
+    opacity: 0.8;
 }
 
 .step h4 {
-    font-size: 1.2rem;
-    margin: 0 0 0.75rem 0;
+    margin: 0 0 1rem 0;
     color: var(--text-main);
-}
-
-.step p {
-    margin: 0;
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    line-height: 1.5;
 }
 
 /* ==========================================
@@ -168,6 +184,7 @@
     box-sizing: border-box;
 }
 
+
 .form-header {
     text-align: center;
     margin-bottom: 3.5rem;
@@ -182,6 +199,7 @@
     color: var(--text-secondary);
 }
 
+/* Update your existing .custom-form class with these two lines */
 .custom-form {
     background: var(--bg-card);
     border: 1px solid rgba(255, 255, 255, 0.05);
@@ -189,7 +207,30 @@
     padding: 3rem;
     box-sizing: border-box;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    
+    /* ADD THESE FOR THE GLOW TO WORK */
+    position: relative; 
+    overflow: hidden;
 }
+
+/* Add the glow pseudo-element for the form */
+.custom-form::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(600px circle at var(--x) var(--y), var(--color-primary), transparent 40%);
+    opacity: 0.15; /* Base glow */
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 0; /* Keep it behind the form inputs */
+}
+
+/* Ensure the inputs stay ABOVE the glow so they remain clickable */
+.custom-form > * {
+    position: relative;
+    z-index: 1;
+}
+
 
 .form-row {
     display: flex;
