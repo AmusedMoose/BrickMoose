@@ -95,6 +95,6 @@ function loadComponent(id, file) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    loadComponent("header-placeholder", "./components/header.html");
-    loadComponent("footer-placeholder", "./components/footer.html");
+    loadComponent("header-placeholder", "/components/header.html");
+    loadComponent("footer-placeholder", "/components/footer.html");
 });
