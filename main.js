@@ -82,22 +82,3 @@ document.querySelectorAll('.scroll-link').forEach(link => {
         }
     });
 });
-
-function loadComponent(id, file) {
-    const element = document.getElementById(id);
-    if (element) {
-        fetch(file)
-            .then(response => response.text())
-            .then(data => {
-                element.innerHTML = data;
-            });
-    }
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    const isRoot = window.location.pathname.split('/').filter(Boolean).length <= 1;
-    const pathPrefix = isRoot ? "" : "../";
-
-    loadComponent("header-placeholder", `${pathPrefix}components/header.html`);
-    loadComponent("footer-placeholder", `${pathPrefix}components/footer.html`);
-});
