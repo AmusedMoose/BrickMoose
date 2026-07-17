@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>3D Brick Preview | BrickMoose</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="custom.css">
+    <style>
+        #scene-container {
+            width: 100%;
+            height: 60vh;
+            background: #000;
+            border-radius: 20px;
+        }
+
+        .upload-zone {
+            margin: 2rem 0;
+            padding: 2rem;
+            border: 2px dashed var(--color-primary);
+            border-radius: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <a href="../" style="color: inherit; text-decoration: none;">Brick<span>Moose</span></a>
+        </div>
+        <nav>
+            <a href="../custom/" class="btn btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Custom
+                Projects</a>
+            <a href="https://static.boredpanda.com/blog/wp-content/uploads/2024/10/bugs-bunny-no-a-classic-cartoon-meme-explained-cover_675.jpg"
+                class="btn btn-secondary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Gallery</a>
+            <a href="https://store.brickmoose.com" class="btn btn-secondary"
+                style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Shop Sets ↗</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1>Custom Brick Photo Preview</h1>
+        <p>Upload a photo to see how it renders on our standard brick display tiles.</p>
+
+        <div id="scene-container"></div>
+
+        <div class="upload-zone">
+            <input type="file" id="imageInput" accept="image/*">
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 BrickMoose. Corporate Gifts & Souvenir Wholesale.</p>
+    </footer>
+
+    <!-- Load Three.js -->
+    <script type="importmap">
+  { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
+</script>
+    <script type="module" src="upload.js"></script>
+
+</body>
+
+</html>
