@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>3D Brick Preview | BrickMoose</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="custom.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <a href="../" style="color: inherit; text-decoration: none;">Brick<span>Moose</span></a>
+        </div>
+        <nav>
+            <a href="../custom/" class="btn btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Custom
+                Projects</a>
+            <a href="../brickify/" class="btn btn-secondary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Brickify
+                (beta)</a>
+            <a href="https://static.boredpanda.com/blog/wp-content/uploads/2024/10/bugs-bunny-no-a-classic-cartoon-meme-explained-cover_675.jpg"
+                class="btn btn-secondary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Gallery</a>
+            <a href="https://store.brickmoose.com" class="btn btn-secondary"
+                style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Shop Sets ↗</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1>Brickify</h1>
+
+        <div class="main-layout">
+            <!-- Sidebar Controls -->
+            <aside class="sidebar">
+                <div class="upload-zone">
+                    <input type="file" id="imageInput" accept="image/*">
+                </div>
+
+                <div class="controls-panel">
+                    <label>Width (Studs):
+                        <div style="display:flex; gap:10px;">
+                            <input type="range" id="widthSlider" min="2" max="14" step="2" value="4" style="flex:1;">
+                            <input type="number" id="widthNum" min="2" max="14" step="2" value="4" style="width: 50px;">
+                        </div>
+                    </label>
+
+                    <label>Height (Rows):
+                        <div style="display:flex; gap:10px;">
+                            <input type="range" id="heightSlider" min="1" max="15" value="5" style="flex:1;">
+                            <input type="number" id="heightNum" min="1" max="15" value="5" style="width: 50px;">
+                        </div>
+                    </label>
+
+                    <label>Color:
+                        <select id="colorSelect">
+                            <option value="#FFFFFF">White</option>
+                            <option value="#A0A5A9">Light Gray</option>
+                            <option value="#6C6E68">Dark Gray</option>
+                            <option value="#000000">Black</option>
+                            <option value="#C91A09">Red</option>
+                            <option value="#FE8A18">Orange</option>
+                            <option value="#F2CD37">Yellow</option>
+                            <option value="#237841">Green</option>
+                            <option value="#0055BF">Blue</option>
+                            <option value="#E4ADC8">Pink</option>
+                            <option value="#81007B">Purple</option>
+                            <option value="#FFFFFF" disabled>Blurple (out of stock)</option>
+                        </select>
+                    </label>
+                </div>
+
+                <div id="editor-container" style="display: none;">
+                    <h3>1. Crop your image</h3>
+                    <!-- CHANGE THIS: Replace your old <canvas> with this <img> -->
+                    <img id="imagePreview" src="" style="max-width: 100%; display: block;">
+                    <button id="applyCropBtn" class="btn btn-primary" style="margin-top: 10px;">Apply to Wall</button>
+                </div>
+            </aside>
+
+            <!-- Main Viewport -->
+            <div id="scene-container"></div>
+        </div>
+    </main>
+    <footer>
+        <p>© 2026 BrickMoose. Corporate Gifts & Souvenir Wholesale.</p>
+    </footer>
+
+    <!-- Load Three.js -->
+    <script type="importmap">
+  { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
+</script>
+    <script type="module" src="upload.js"></script>
+
+</body>
+
+</html>

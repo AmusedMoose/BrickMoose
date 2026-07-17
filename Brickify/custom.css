@@ -1,0 +1,24 @@
+.main-layout {
+    display: grid;
+    grid-template-columns: 350px 1fr; /* 350px left, rest right */
+    gap: 2rem;
+    align-items: start;
+}
+
+.controls-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    margin-bottom: 2rem;
+}
+    
+#scene-container {
+    width: 100%;
+    height: 60vh; /* This forces the container to be 60% of the viewport height */
+    background: #1a1a1a; 
+    border-radius: 20px;
+    position: relative; /* Helps child canvas position correctly */
+}
