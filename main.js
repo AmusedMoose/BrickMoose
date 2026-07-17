@@ -88,3 +88,27 @@ document.querySelectorAll('.scroll-link').forEach(link => {
         }
     });
 });
+
+
+
+const contactForm = document.getElementById('contactForm');
+const successBox = document.getElementById('success-message');
+const echoData = document.getElementById('echo-data');
+
+if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault(); // Stop the page from refreshing
+
+        // 1. Get the data
+        const formData = new FormData(contactForm);
+        const name = formData.get('user_name');
+        const message = formData.get('user_message');
+
+        // 2. Hide form, show success
+        contactForm.style.display = 'none';
+        successBox.style.display = 'block';
+
+        // 3. Populate the echo box
+        echoData.innerHTML = `<strong>Name:</strong> ${name}<br><br><strong>Message:</strong><br>${message}`;
+    });
+}

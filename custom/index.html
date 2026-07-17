@@ -13,11 +13,11 @@
 
     <header>
         <div class="logo">
-            <a href="../index.html" style="color: inherit; text-decoration: none;">Brick<span>Moose</span></a>
+            <a href="../" style="color: inherit; text-decoration: none;">Brick<span>Moose</span></a>
         </div>
         <nav>
-            <a href="../custom/index.html" class="btn btn-primary"
-                style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Custom Projects</a>
+            <a href="../custom/" class="btn btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Custom
+                Projects</a>
             <a href="https://static.boredpanda.com/blog/wp-content/uploads/2024/10/bugs-bunny-no-a-classic-cartoon-meme-explained-cover_675.jpg"
                 class="btn btn-secondary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Gallery</a>
             <a href="https://store.brickmoose.com" class="btn btn-secondary"
@@ -140,7 +140,7 @@
                 <div class="text-content">
                     <div class="cap-icon">📦</div>
                     <h3>Custom Packaging</h3>
-                    <p>Completely bespoke, six-sided packaging. We design custom die-lines to fit your kit perfectly,
+                    <p>Completely bespoke, six-sided packaging. We design custom die-lines to fit your set perfectly,
                         ensuring a premium unboxing experience with full-bleed graphics and professional-grade branding
                         that makes your product shelf-ready.</p>
                 </div>
@@ -174,7 +174,7 @@
         <div class="form-container">
             <div class="form-header">
                 <h2>Commission Inquiry</h2>
-                <p>Tell us about your project scale, scope, and timeline. Our design team responds within 2 business
+                <p>Tell us about your project scale, scope, and timeline. Our design team responds within 5 business
                     days.</p>
             </div>
 
@@ -182,18 +182,18 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="name">Contact Name</label>
-                        <input type="text" id="name" name="name" placeholder="Brick Moose" required>
+                        <input type="text" id="name" name="name" placeholder="John Doe" required>
                     </div>
                     <div class="form-group">
-                        <label for="email">Work Email</label>
-                        <input type="email" id="email" name="email" placeholder="you@company.com" required>
+                        <label for="email">Email / Phone Number</label>
+                        <input type="text" id="email" name="email" placeholder="you@company.com" required>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="org">Organization / Company</label>
-                        <input type="text" id="org" name="org" placeholder="e.g., UCR Heritage Center">
+                        <input type="text" id="org" name="org" placeholder="e.g., City of ___">
                     </div>
                     <div class="form-group">
                         <label for="project-type">Project Category</label>
@@ -201,19 +201,26 @@
                             <option value="" disabled selected>Select a category...</option>
                             <option value="architecture">Architectural Landmark Scale</option>
                             <option value="mechanical">Kinetic / Machinery Model</option>
-                            <option value="wholesale">Wholesale Souvenir Kits</option>
+                            <option value="wholesale">Wholesale Souvenir Sets</option>
                             <option value="other">Bespoke Structural Display</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="budget">Estimated Volume / Budget Range</label>
-                    <select id="budget" name="budget">
+                    <label for="setcount">Estimated Volume / Budget Range</label>
+                    <select id="setcount" name="setcount">
+                        <option value="low-wholesale">Small Batch Wholesale (50 - 200 sets)</option>
+                        <option value="high-wholesale">Enterprise Wholesale (500+ sets)</option>
                         <option value="display">Single Premium Showroom Display Piece</option>
-                        <option value="low-wholesale">Small Batch Wholesale (50 - 200 kits)</option>
-                        <option value="high-wholesale">Enterprise Wholesale (500+ kits)</option>
                     </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pricing">Estimated Budget Range (USD)</label>
+                        <input type="number" id="pricing" name="pricing" placeholder="e.g., $2000">
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -225,6 +232,14 @@
 
                 <button type="submit" class="btn btn-primary form-submit">Submit Design Brief</button>
             </form>
+
+            <div id="success-message" class="custom-form" style="display: none;">
+                <h2>Thank you!</h2>
+                <p>We've received your inquiry. Here is what you sent us:</p>
+                <div id="echo-data"
+                    style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; margin-top: 1rem;"></div>
+            </div>
+
         </div>
     </section>
 
