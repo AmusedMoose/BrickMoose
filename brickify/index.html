@@ -42,15 +42,16 @@
                 <div class="controls-panel">
                     <label>Width (Studs):
                         <div style="display:flex; gap:10px;">
-                            <input type="range" id="widthSlider" min="2" max="14" step="2" value="4" style="flex:1;">
-                            <input type="number" id="widthNum" min="2" max="14" step="2" value="4" style="width: 50px;">
+                            <!-- Slider Min updated to 4 to support 4 and 6 stud designs -->
+                            <input type="range" id="widthSlider" min="8" max="24" step="2" value="8" style="flex:1;">
+                            <input type="number" id="widthNum" min="8" max="24" step="2" value="8" style="width: 50px;">
                         </div>
                     </label>
 
                     <label>Height (Rows):
                         <div style="display:flex; gap:10px;">
-                            <input type="range" id="heightSlider" min="1" max="15" value="5" style="flex:1;">
-                            <input type="number" id="heightNum" min="1" max="15" value="5" style="width: 50px;">
+                            <input type="range" id="heightSlider" min="5" max="15" value="5" style="flex:1;">
+                            <input type="number" id="heightNum" min="5" max="15" value="5" style="width: 50px;">
                         </div>
                     </label>
 
@@ -73,10 +74,17 @@
                 </div>
 
                 <div id="editor-container" style="display: none;">
-                    <h3>1. Crop your image</h3>
-                    <!-- CHANGE THIS: Replace your old <canvas> with this <img> -->
+                    <h3>Crop your image. The cropped portion is what will appear on the bricks.</h3>
                     <img id="imagePreview" src="" style="max-width: 100%; display: block;">
-                    <button id="applyCropBtn" class="btn btn-primary" style="margin-top: 10px;">Apply to Wall</button>
+
+                    <!-- "Proceed to Checkout" Button -->
+                    <button id="checkoutBtn" class="btn btn-primary"
+                        style="margin-top: 20px; width: 100%; background-color: #237841;">
+                        Proceed to Checkout
+                    </button>
+                    <p style="font-size: 0.8rem; margin-top: 5px; color: #666;">
+                        This will save your cropped image and take you to the store.
+                    </p>
                 </div>
             </aside>
 

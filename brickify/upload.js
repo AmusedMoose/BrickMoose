@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'https://unpkg.com/three@0.160.0/examples/jsm/loaders/GLTFLoader.js';
 
-// --- 1. Global Setup (Defined at the top) ---
+// --- 1. Global Setup ---
 const container = document.getElementById('scene-container');
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
@@ -11,7 +11,6 @@ renderer.setSize(container.clientWidth, container.clientHeight);
 container.appendChild(renderer.domElement);
 const controls = new OrbitControls(camera, renderer.domElement);
 
-// Set default camera settings
 camera.fov = 20;
 camera.updateProjectionMatrix();
 
@@ -27,7 +26,6 @@ const colorSelect = document.getElementById('colorSelect');
 const imageInput = document.getElementById('imageInput');
 const imagePreview = document.getElementById('imagePreview');
 const editorContainer = document.getElementById('editor-container');
-const applyCropBtn = document.getElementById('applyCropBtn');
 const loader = new GLTFLoader();
 
 // --- 2. Logic Functions ---
@@ -42,90 +40,139 @@ function applyMaterial(brick, color) {
     });
 }
 
+// Automatically generate the texture and project it onto the physical dimensions of the 3D wall
+function applyCroppedImageToWall() {
+    if (!cropper) return;
+
+    const croppedCanvas = cropper.getCroppedCanvas();
+    if (!croppedCanvas) return;
+
+    const texture = new THREE.CanvasTexture(croppedCanvas);
+    const wallWidth = parseInt(widthSlider.value); // 1 stud = 1.0 unit
+    const wallHeight = parseInt(heightSlider.value) * 1.2;
+
+    const planeGeo = new THREE.PlaneGeometry(wallWidth, wallHeight);
+    const planeMat = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
+    const imagePlane = new THREE.Mesh(planeGeo, planeMat);
+    imagePlane.name = "imagePlane";
+
+    const brickGroup = scene.getObjectByName("brickGroup");
+    if (brickGroup) {
+        // Calculate bounding box of the physical bricks to position the texture perfectly
+        const box = new THREE.Box3().setFromObject(brickGroup);
+        const center = new THREE.Vector3();
+        box.getCenter(center);
+
+        // Match the center of the bricks and move slightly forward on Z to prevent z-fighting
+        imagePlane.position.set(center.x, center.y, 1.05);
+
+        const existing = brickGroup.getObjectByName("imagePlane");
+        if (existing) {
+            existing.geometry.dispose();
+            if (existing.material.map) existing.material.map.dispose();
+            existing.material.dispose();
+            brickGroup.remove(existing);
+        }
+        brickGroup.add(imagePlane);
+    }
+}
+
 function updateGrid() {
-    // 1. Clean up
     scene.children.forEach(child => { if (child.name === "brickGroup") scene.remove(child); });
     if (!brick2x4 || !brick2x2) return;
 
-    // 2. Setup Dimensions
-    const w = parseInt(document.getElementById('widthSlider').value);
-    const h = parseInt(document.getElementById('heightSlider').value);
+    const w = parseInt(widthSlider.value); // Exact stud width
+    const h = parseInt(heightSlider.value); // Exact row height
     const color = colorSelect.value;
 
-    const studWidth = 1.0;
-    const brick4x2_Width = 4.0;
-    const brick2x2_Width = 2.0;
-    const yOffset = 1.2;
-
+    const yOffset = 1.2; // Height of 1 brick
     const brickGroup = new THREE.Group();
     brickGroup.name = "brickGroup";
 
-    const totalWidthUnits = w * 2.0;
-    const xStart = -totalWidthUnits / 2;
+    const xStart = -w / 2; // Center alignment start point
 
     for (let y = 0; y < h; y++) {
         const isStaggeredRow = (y % 2 !== 0);
+        let currentX = xStart;
 
         if (!isStaggeredRow) {
-            let currentX = xStart;
-            for (let i = 0; i < w / 2; i++) {
+            // STANDARD ROW (Even rows)
+            // Fill with as many 2x4s as possible
+            const num2x4 = Math.floor(w / 4);
+            const has2x2 = (w % 4 === 2);
+
+            for (let i = 0; i < num2x4; i++) {
                 const b = brick2x4.clone();
                 applyMaterial(b, color);
-                b.position.set(currentX + (brick4x2_Width / 2), y * yOffset, 0);
+                b.position.set(currentX + 2.0, y * yOffset, 0); // Origin offset for 2x4
                 brickGroup.add(b);
-                currentX += brick4x2_Width;
+                currentX += 4.0;
+            }
+            // Fill any remaining 2-stud space at the end with a 2x2
+            if (has2x2) {
+                const b = brick2x2.clone();
+                applyMaterial(b, color);
+                b.position.set(currentX + 1.0, y * yOffset, 0); // Origin offset for 2x2
+                brickGroup.add(b);
             }
         } else {
+            // STAGGERED ROW (Odd rows)
+            // Start row with a 2x2 brick on the left
             const leftEnd = brick2x2.clone();
             applyMaterial(leftEnd, color);
-            leftEnd.position.set(xStart + (brick2x2_Width / 2) + 0, y * yOffset, 0);
+            leftEnd.position.set(currentX + 1.0, y * yOffset, 0);
             brickGroup.add(leftEnd);
+            currentX += 2.0;
 
-            let currentX = xStart + brick2x2_Width - 1.0;
-            const remainingWidth = totalWidthUnits - brick2x2_Width - brick2x2_Width;
-            for (let i = 0; i < remainingWidth / brick4x2_Width; i++) {
+            // Fill the remaining space (w - 2 studs)
+            const remainingStuds = w - 2;
+            const num2x4 = Math.floor(remainingStuds / 4);
+            const has2x2 = (remainingStuds % 4 === 2);
+
+            for (let i = 0; i < num2x4; i++) {
                 const b = brick2x4.clone();
                 applyMaterial(b, color);
-                b.position.set(currentX + (brick4x2_Width / 2) + 1, y * yOffset, 0);
+                b.position.set(currentX + 2.0, y * yOffset, 0);
                 brickGroup.add(b);
-                currentX += brick4x2_Width;
+                currentX += 4.0;
             }
-
-            const rightEnd = brick2x2.clone();
-            applyMaterial(rightEnd, color);
-            rightEnd.position.set(currentX + (brick2x2_Width / 2) + 1, y * yOffset, 0);
-            brickGroup.add(rightEnd);
+            // Fill trailing gap with a 2x2 if necessary (e.g., width 4 becomes 2x2 - 2x2)
+            if (has2x2) {
+                const b = brick2x2.clone();
+                applyMaterial(b, color);
+                b.position.set(currentX + 1.0, y * yOffset, 0);
+                brickGroup.add(b);
+            }
         }
     }
     scene.add(brickGroup);
 
-    // --- Dynamic Camera Centering Logic ---
-    // 1. Calculate the bounding box of the newly built brick wall
+    // Dynamic Cropper Ratio Syncing
+    if (cropper) {
+        const targetAspectRatio = w / (h * 1.2);
+        cropper.setAspectRatio(targetAspectRatio);
+        applyCroppedImageToWall();
+    }
+
+    // Dynamic Camera Centering Logic
     const box = new THREE.Box3().setFromObject(brickGroup);
     const center = new THREE.Vector3();
     const size = new THREE.Vector3();
     box.getCenter(center);
     box.getSize(size);
 
-    // 2. Set the OrbitControls look-at target to the exact center of the wall
     controls.target.copy(center);
 
-    // 3. Estimate an appropriate camera distance dynamically based on wall dimensions and FOV
     const maxDim = Math.max(size.x, size.y);
     const fovRad = (camera.fov * Math.PI) / 180;
 
-    // Calculate distance to perfectly fit the grid inside the screen height plus padding
     let cameraZ = Math.abs(maxDim / Math.sin(fovRad / 2));
-    cameraZ *= 0.6; // Apply a slight padding factor
+    cameraZ *= 0.6;
 
-    // Fallback minimum distance so camera doesn't zoom in too close for very small grids
     const minDistance = 25;
     cameraZ = Math.max(cameraZ, minDistance);
 
-    // 4. Update the camera position (keep it looking directly down the Z-axis at the grid center)
     camera.position.set(cameraZ / 8, cameraZ / 2, cameraZ);
-
-    // Update controls internal state
     controls.update();
 }
 
@@ -156,34 +203,15 @@ imageInput.addEventListener('change', (e) => {
         imagePreview.onload = () => {
             if (cropper) cropper.destroy();
             cropper = new Cropper(imagePreview, {
-                aspectRatio: (parseInt(widthSlider.value) * 2.0) / (parseInt(heightSlider.value) * 1.2),
+                aspectRatio: parseInt(widthSlider.value) / (parseInt(heightSlider.value) * 1.2),
                 viewMode: 1,
+                crop() {
+                    applyCroppedImageToWall();
+                }
             });
         };
     };
     reader.readAsDataURL(file);
-});
-
-applyCropBtn.addEventListener('click', () => {
-    if (!cropper) return;
-    const croppedCanvas = cropper.getCroppedCanvas();
-    const texture = new THREE.CanvasTexture(croppedCanvas);
-    const wallWidth = parseInt(widthSlider.value) * 2.0;
-    const wallHeight = parseInt(heightSlider.value) * 1.2;
-
-    const planeGeo = new THREE.PlaneGeometry(wallWidth, wallHeight);
-    const planeMat = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
-    const imagePlane = new THREE.Mesh(planeGeo, planeMat);
-    imagePlane.name = "imagePlane";
-    imagePlane.position.set(0, -0.6 + (wallHeight / 2) - 0.6, 1.05);
-
-    scene.traverse((child) => {
-        if (child.isGroup && child.name === "brickGroup") {
-            const existing = child.getObjectByName("imagePlane");
-            if (existing) child.remove(existing);
-            child.add(imagePlane);
-        }
-    });
 });
 
 colorSelect.addEventListener('change', updateGrid);
@@ -199,4 +227,33 @@ window.addEventListener('resize', () => {
     camera.aspect = container.clientWidth / container.clientHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(container.clientWidth, container.clientHeight);
+});
+
+// --- 4. Checkout Logic ---
+const checkoutBtn = document.getElementById('checkoutBtn');
+
+checkoutBtn.addEventListener('click', () => {
+    if (!cropper) {
+        alert("Please upload and crop an image first before checking out.");
+        return;
+    }
+
+    const croppedCanvas = cropper.getCroppedCanvas();
+    const dataUrl = croppedCanvas.toDataURL('image/png');
+
+    const downloadLink = document.createElement('a');
+    downloadLink.download = 'BrickMoose-Custom-Design.png';
+    downloadLink.href = dataUrl;
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+
+    const w = parseInt(widthSlider.value);
+    const h = parseInt(heightSlider.value);
+
+    setTimeout(() => {
+        const storeUrl = `https://brickmoose.com/store-1/p/brickify?width=${w}&height=${h}`;
+        window.location.href = storeUrl;
+    }, 500);
 });
